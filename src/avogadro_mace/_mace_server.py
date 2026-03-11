@@ -55,7 +55,13 @@ def run_mace_server(mol_cjson: dict, calc) -> None:
         for request in server.requests():
             atoms.set_positions(request.coords[keep])
 
-            if request.wants_gradient:
+            if request.wants_energy_and_gradient:
+                energy = float(atoms.get_total_energy()) * _EV_TO_KJ_MOL
+                forces = atoms.get_forces()
+                grad_full = np.zeros((num_atoms, 3), dtype=np.float64)
+                grad_full[keep] = forces * -_EV_TO_KJ_MOL
+                request.send_energy_and_gradient(energy, grad_full)
+            elif request.wants_gradient:
                 forces = atoms.get_forces()  # shape (n_unique, 3), eV/Å
                 grad_full = np.zeros((num_atoms, 3), dtype=np.float64)
                 grad_full[keep] = forces * -_EV_TO_KJ_MOL
