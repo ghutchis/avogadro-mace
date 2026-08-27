@@ -1,6 +1,6 @@
 [project]
 authors = [{name = "Geoffrey Hutchison", email = "geoff.hutchison@gmail.com"}]
-dependencies = ["mace-torch>=0.3.15,<0.4"]
+dependencies = ["avogadro>=2.0", "mace-torch>=0.3.15,<0.4"]
 name = "avogadro-mace"
 requires-python = ">= 3.11"
 version = "0.1.0"
