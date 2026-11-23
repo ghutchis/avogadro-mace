@@ -15,7 +15,7 @@ from ._mace_server import run_mace_server
 _DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-def run():
+def run(protocol_out):
     bootstrap = json.loads(sys.stdin.buffer.readline())
     calc = mace_off(model="medium", default_dtype="float32", device=_DEVICE)
-    run_mace_server(bootstrap["cjson"], calc)
+    run_mace_server(bootstrap["cjson"], calc, protocol_out)

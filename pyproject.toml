@@ -3,7 +3,7 @@ authors = [{name = "Geoffrey Hutchison", email = "geoff.hutchison@gmail.com"}]
 dependencies = ["avogadro>=2.1.0", "mace-torch>=0.3.17,<0.4"]
 name = "avogadro-mace"
 requires-python = ">= 3.11"
-version = "0.1.1"
+version = "0.1.2"
 license = "BSD-3-Clause"
 description = "Energy model using MACE ML potentials"
 
@@ -57,3 +57,15 @@ platforms = ["win-64", "linux-64", "linux-aarch64", "osx-arm64"]
 avogadro_mace = { path = ".", editable = true }
 
 [tool.pixi.tasks]
+
+# pytest lives in its own environment so it is not installed alongside the
+# plugin when Avogadro sets it up. `pixi run test` finds the task there.
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest"
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+test = { features = ["test"], solve-group = "default" }
